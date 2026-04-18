@@ -1,0 +1,276 @@
+/* ── CSS 변수 ──────────────────────────────────────────────── */
+:root {
+  --bg:     #0a0e1a;
+  --card:   #141824;
+  --card2:  #1a2035;
+  --gold:   #f7931a;
+  --goldl:  #fbbf24;
+  --blue:   #3b82f6;
+  --bluel:  #60a5fa;
+  --green:  #10b981;
+  --red:    #ef4444;
+  --text:   #e2e8f0;
+  --muted:  #94a3b8;
+  --border: #2d3748;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
+  line-height: 1.7;
+}
+
+/* ── 네비게이션 ─────────────────────────────────────────────── */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(10, 14, 26, .95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+  display: flex; align-items: center; height: 64px; gap: 2rem;
+}
+.logo {
+  font-size: 1.3rem; font-weight: 900;
+  background: linear-gradient(135deg, var(--gold), var(--goldl));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  cursor: pointer; white-space: nowrap;
+}
+.nav-links { display: flex; gap: .4rem; list-style: none; }
+.nav-links a {
+  display: block; padding: .45rem 1rem;
+  color: var(--muted); text-decoration: none;
+  border-radius: 8px; font-size: .9rem; transition: all .2s; cursor: pointer;
+}
+.nav-links a:hover,
+.nav-links a.on { color: var(--text); background: var(--card2); }
+.nav-links a.on  { color: var(--gold); }
+
+/* ── 레이아웃 헬퍼 ─────────────────────────────────────────── */
+.wrap { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
+.sec  { padding: 4rem 2rem; }
+.sec-t   { font-size: 1.9rem; font-weight: 800; margin-bottom: .4rem; }
+.sec-sub { color: var(--muted); margin-bottom: 2.5rem; }
+
+/* ── 홈 히어로 ─────────────────────────────────────────────── */
+.hero {
+  background: linear-gradient(135deg, #0a0e1a 0%, #0f172a 50%, #1a0a2e 100%);
+  padding: 5rem 2rem; text-align: center; position: relative; overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; top: -50%; left: -50%;
+  width: 200%; height: 200%;
+  background: radial-gradient(ellipse at center, rgba(247,147,26,.1) 0%, transparent 60%);
+  pointer-events: none;
+}
+.hero h1 {
+  font-size: 2.8rem; font-weight: 900; margin-bottom: 1rem;
+  background: linear-gradient(135deg, #fff 0%, var(--goldl) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.hero p { font-size: 1.1rem; color: var(--muted); max-width: 600px; margin: 0 auto 2rem; }
+.btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+/* ── 버튼 ───────────────────────────────────────────────────── */
+.btn {
+  padding: .7rem 1.8rem; border-radius: 12px; border: none;
+  font-size: .95rem; font-weight: 700; cursor: pointer; transition: all .2s;
+}
+.btn-primary   { background: linear-gradient(135deg, var(--gold), var(--goldl)); color: #000; }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(247,147,26,.4); }
+.btn-secondary { background: var(--card2); color: var(--text); border: 1px solid var(--border); }
+.btn-secondary:hover { background: var(--border); }
+
+/* ── 카드 그리드 ────────────────────────────────────────────── */
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+.card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 16px; padding: 1.5rem; transition: all .3s;
+}
+.card:hover { transform: translateY(-4px); border-color: var(--gold); box-shadow: 0 8px 30px rgba(247,147,26,.15); }
+.card .ico { font-size: 2.2rem; margin-bottom: .8rem; }
+.card h3   { font-size: 1.05rem; font-weight: 700; margin-bottom: .4rem; }
+.card p    { color: var(--muted); font-size: .88rem; }
+
+/* ── 배지 ───────────────────────────────────────────────────── */
+.badge { display: inline-block; padding: .2rem .65rem; border-radius: 20px; font-size: .75rem; font-weight: 700; margin: .2rem; }
+.bg { background: rgba(247,147,26,.2); color: var(--gold);  border: 1px solid rgba(247,147,26,.4); }
+.bb { background: rgba(59,130,246,.2); color: var(--bluel); border: 1px solid rgba(59,130,246,.4); }
+.bk { background: rgba(16,185,129,.2); color: var(--green); border: 1px solid rgba(16,185,129,.4); }
+
+/* ── 통계 카드 ─────────────────────────────────────────────── */
+.stats {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1rem; margin-top: 1.5rem;
+}
+.stat {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 12px; padding: 1rem; text-align: center;
+}
+.stat .v { font-size: 1.6rem; font-weight: 900; color: var(--gold); line-height: 1; }
+.stat .l { font-size: .75rem; color: var(--muted); margin-top: .3rem; }
+
+/* ── 단순 페이지 히어로 ─────────────────────────────────────── */
+.simple-hero {
+  padding: 4rem 2rem; text-align: center;
+  border-bottom: 1px solid var(--border);
+}
+.simple-hero h1 { font-size: 2.3rem; font-weight: 900; margin-bottom: .4rem; }
+.simple-hero.color-green { background: linear-gradient(135deg, #0a0e1a, #0a1a0e); }
+.simple-hero.color-green h1 { color: var(--green); }
+.simple-hero.color-blue  { background: linear-gradient(135deg, #0a0e1a, #0a1020); }
+.simple-hero.color-blue  h1 { color: var(--bluel); }
+
+/* ── MSTR 히어로 ───────────────────────────────────────────── */
+.mhero { background: linear-gradient(135deg, #0a0e1a, #0a1628); padding: 3.5rem 2rem; border-bottom: 1px solid var(--border); }
+.mhero-title { font-size: 2.4rem; font-weight: 900; color: var(--gold); margin-bottom: .3rem; }
+
+/* ── 탭 ─────────────────────────────────────────────────────── */
+.tabs {
+  display: flex; gap: .4rem; padding: .8rem 1.5rem;
+  background: var(--card); border-bottom: 1px solid var(--border);
+  overflow-x: auto; flex-wrap: nowrap;
+  position: sticky; top: 64px; z-index: 50;
+}
+.tab {
+  padding: .45rem 1.1rem; border-radius: 8px; border: 1px solid var(--border);
+  background: transparent; color: var(--muted); cursor: pointer;
+  font-size: .85rem; white-space: nowrap; transition: all .2s;
+}
+.tab:hover { color: var(--text); background: var(--card2); }
+.tab.on    { background: var(--gold); color: #000; border-color: var(--gold); font-weight: 700; }
+
+.tc { display: none; }
+.tc.on { display: block; }
+
+/* ── 마크다운 본문 ─────────────────────────────────────────── */
+.md-body { padding: 2.5rem 2rem; max-width: 1000px; margin: 0 auto; }
+.md-body h2 { font-size: 1.55rem; font-weight: 800; margin: 1.8rem 0 .9rem; }
+.md-body h3 { font-size: 1.1rem; font-weight: 700; margin: 1.4rem 0 .65rem; }
+.md-body h4 { font-size: 1rem; font-weight: 700; margin: 1rem 0 .4rem; }
+.md-body p  { margin-bottom: .65rem; }
+.md-body ul, .md-body ol { padding-left: 1.5rem; margin-bottom: .65rem; }
+.md-body li { margin-bottom: .3rem; color: var(--muted); font-size: .92rem; }
+.md-body strong { color: var(--text); }
+
+/* ── 커스텀 박스들 ─────────────────────────────────────────── */
+.abox {
+  background: linear-gradient(135deg, rgba(247,147,26,.1), rgba(251,191,36,.05));
+  border: 1px solid rgba(247,147,26,.3); border-radius: 14px;
+  padding: 1.4rem; margin: 1.3rem 0;
+}
+.abox .lbl {
+  font-size: .75rem; font-weight: 700; color: var(--gold);
+  text-transform: uppercase; letter-spacing: .08em; margin-bottom: .4rem;
+}
+.kbox {
+  background: var(--card2); border-left: 4px solid var(--green);
+  border-radius: 0 10px 10px 0; padding: 1.1rem 1.4rem; margin: 1.3rem 0;
+}
+.ibox {
+  background: var(--card2); border-left: 4px solid var(--blue);
+  border-radius: 0 10px 10px 0; padding: 1.1rem 1.4rem; margin: 1.3rem 0;
+}
+.wbox {
+  background: rgba(239,68,68,.1); border-left: 4px solid var(--red);
+  border-radius: 0 10px 10px 0; padding: 1.1rem 1.4rem; margin: 1.3rem 0;
+}
+
+/* ── 공식 박스 ─────────────────────────────────────────────── */
+.fbox {
+  background: var(--card2); border: 1px solid var(--blue); border-radius: 12px;
+  padding: 1.4rem; margin: 1.3rem 0; text-align: center;
+}
+.fbox .f-label { font-size: .9rem; color: var(--muted); margin-bottom: .3rem; }
+.fbox .f-main  { font-size: 1.2rem; color: var(--bluel); font-weight: 700; margin: .4rem 0; }
+.fbox .f-sub   { font-size: .88rem; color: var(--muted); margin-top: .3rem; }
+
+/* ── 스텝 ───────────────────────────────────────────────────── */
+.steps { display: flex; flex-direction: column; gap: .9rem; margin: 1.3rem 0; }
+.step {
+  display: flex; align-items: flex-start; gap: 1rem;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 12px; padding: 1.1rem;
+}
+.sn {
+  background: var(--gold); color: #000;
+  width: 30px; height: 30px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800; font-size: .85rem; flex-shrink: 0; margin-top: .1rem;
+}
+.sc h4 { font-weight: 700; margin-bottom: .2rem; font-size: .95rem; }
+.sc p  { color: var(--muted); font-size: .87rem; margin: 0; }
+
+/* ── 플라이휠 ──────────────────────────────────────────────── */
+.fw { display: flex; flex-direction: column; align-items: center; gap: 0; margin: 1.5rem 0; }
+.fwi {
+  background: var(--card2); border: 1px solid var(--border); border-radius: 10px;
+  padding: .65rem 1.3rem; text-align: center;
+  width: 75%; max-width: 380px; font-size: .88rem; font-weight: 600;
+}
+.fwi.go {
+  background: rgba(247,147,26,.15);
+  border-color: rgba(247,147,26,.45);
+  color: var(--gold);
+}
+.fwa { font-size: 1.3rem; color: var(--muted); padding: .15rem 0; }
+
+/* ── 다이어그램 박스 ────────────────────────────────────────── */
+.dbox {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 14px; padding: 1.5rem; margin: 1.3rem 0; overflow-x: auto;
+}
+.dbox .dt {
+  font-size: .82rem; font-weight: 700; color: var(--muted);
+  text-align: center; margin-bottom: 1.2rem;
+  text-transform: uppercase; letter-spacing: .05em;
+}
+.mermaid { display: flex; justify-content: center; }
+
+/* ── 테이블 ─────────────────────────────────────────────────── */
+table  { width: 100%; border-collapse: collapse; margin: 1.3rem 0; border-radius: 12px; overflow: hidden; }
+th     { background: var(--card2); padding: .7rem 1rem; text-align: left; font-weight: 700; color: var(--gold); border-bottom: 1px solid var(--border); }
+td     { padding: .7rem 1rem; border-bottom: 1px solid var(--border); background: var(--card); font-size: .9rem; }
+tr:last-child td { border-bottom: none; }
+tr:hover td      { background: var(--card2); }
+
+/* ── 인라인 색상 유틸 ──────────────────────────────────────── */
+.up { color: var(--green); font-weight: 700; }
+.dn { color: var(--red);   font-weight: 700; }
+.gd { color: var(--gold);  font-weight: 700; }
+.mut { color: var(--muted); }
+
+/* ── 2열 레이아웃 ───────────────────────────────────────────── */
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 1.3rem; margin: 1.3rem 0; }
+.cc  { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 1.3rem; }
+.cc.gn { border-color: rgba(16,185,129,.35); }
+.cc.rd { border-color: rgba(239,68,68,.35); }
+.cc h4 { font-size: .95rem; font-weight: 700; margin-bottom: .8rem; }
+.cc ul { padding-left: 1.1rem; color: var(--muted); font-size: .87rem; line-height: 1.9; }
+
+/* ── 푸터 ───────────────────────────────────────────────────── */
+footer {
+  background: var(--card); border-top: 1px solid var(--border);
+  padding: 2rem; text-align: center; color: var(--muted); font-size: .83rem;
+}
+
+/* ── 스크롤 탑 버튼 ─────────────────────────────────────────── */
+.scroll-top {
+  position: fixed; bottom: 1.8rem; right: 1.8rem;
+  width: 44px; height: 44px; background: var(--gold); color: #000;
+  border: none; border-radius: 50%; font-size: 1.1rem; cursor: pointer;
+  display: none; align-items: center; justify-content: center;
+  box-shadow: 0 4px 14px rgba(247,147,26,.4); transition: transform .2s; z-index: 50;
+}
+.scroll-top:hover { transform: translateY(-3px); }
+
+/* ── 반응형 ─────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .hero h1       { font-size: 2rem; }
+  .two           { grid-template-columns: 1fr; }
+  .tabs          { padding: .6rem .8rem; }
+  .fwi           { width: 90%; }
+  .md-body       { padding: 1.5rem 1rem; }
+}
