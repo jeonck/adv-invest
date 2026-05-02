@@ -37,6 +37,7 @@ nav {
   background: linear-gradient(135deg, var(--gold), var(--goldl));
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   cursor: pointer; white-space: nowrap;
+  text-decoration: none;
 }
 .nav-links { display: flex; gap: .4rem; list-style: none; }
 .nav-links a {

@@ -1,10 +1,17 @@
 /**
- * app.js — 라우팅, 페이지 렌더링, 이벤트 처리
+ * app.js — 해시 기반 라우팅, 페이지 렌더링, 이벤트 처리
+ *
+ * URL 구조:
+ *   #home          → 홈 페이지
+ *   #mstr          → MSTR 페이지 (첫 번째 탭)
+ *   #mstr/t2       → MSTR 페이지, t2 탭
+ *   #method/t3     → 일등주식투자법 페이지, t3 탭
  */
 const App = {
   currentPage: null,
   currentTab:  null,
-  cache: {},           // fetch 결과 캐시
+  tabsScrollTop: 0,
+  cache: {},
 
   // ── Mermaid 초기화 ──────────────────────────────────────────
   initMermaid() {
@@ -36,14 +43,11 @@ const App = {
   renderNav() {
     const links = SITE.pages.map(p => `
       <li>
-        <a id="nav-${p.id}" href="#"
-           onclick="App.navigate('${p.id}');return false">
-          ${p.navLabel}
-        </a>
+        <a id="nav-${p.id}" href="#${p.id}">${p.navLabel}</a>
       </li>`).join('');
 
     document.getElementById('nav-root').innerHTML = `
-      <div class="logo" onclick="App.navigate('home')">${SITE.title}</div>
+      <a class="logo" href="#home">${SITE.title}</a>
       <ul class="nav-links">${links}</ul>`;
   },
 
@@ -55,6 +59,18 @@ const App = {
     const text = await res.text();
     this.cache[url] = text;
     return text;
+  },
+
+  // ── 해시 파싱 → { pageId, tabId } ──────────────────────────
+  parseHash() {
+    const raw = window.location.hash.replace('#', '') || 'home';
+    const [pageId, tabId] = raw.split('/');
+    return { pageId: pageId || 'home', tabId: tabId || null };
+  },
+
+  // ── 프로그래매틱 이동 (해시 업데이트 → hashchange 발생) ────
+  navigate(pageId, tabId) {
+    window.location.hash = tabId ? `${pageId}/${tabId}` : pageId;
   },
 
   // ── 홈 페이지 HTML 생성 ─────────────────────────────────────
@@ -123,22 +139,25 @@ const App = {
     return heroHtml + bodyHtml;
   },
 
-  // ── 탭 페이지(tabbed) 렌더링 ───────────────────────────────
-  buildTabbedPage(page) {
+  // ── 탭 페이지(tabbed) HTML 생성 ────────────────────────────
+  buildTabbedPage(page, activeTabId) {
     const { hero, tabs } = page;
+    const firstTabId = activeTabId || tabs[0].id;
+
     const statsHtml = hero.stats.map(s => `
       <div class="stat">
         <div class="v" style="font-size:${s.value.length > 4 ? '1.1rem' : '1.6rem'}">${s.value}</div>
         <div class="l">${s.label}</div>
       </div>`).join('');
 
-    const tabBtns = tabs.map((t, i) =>
-      `<button class="tab${i === 0 ? ' on' : ''}"
-               onclick="App.switchTab('${page.id}','${t.id}',this)">${t.label}</button>`
+    const tabBtns = tabs.map(t =>
+      `<button class="tab${t.id === firstTabId ? ' on' : ''}"
+               data-tab="${t.id}"
+               onclick="App.navigate('${page.id}','${t.id}')">${t.label}</button>`
     ).join('');
 
-    const tabContents = tabs.map((t, i) =>
-      `<div id="tc-${t.id}" class="tc${i === 0 ? ' on' : ''}">
+    const tabContents = tabs.map(t =>
+      `<div id="tc-${t.id}" class="tc${t.id === firstTabId ? ' on' : ''}">
          <p class="mut" style="padding:2rem">로딩 중...</p>
        </div>`
     ).join('');
@@ -174,28 +193,32 @@ const App = {
     }
   },
 
-  // ── 탭 전환 ────────────────────────────────────────────────
-  async switchTab(pageId, tabId, btn) {
+  // ── 탭 활성화 (버튼 + 콘텐츠 패널) ────────────────────────
+  async activateTab(page, tabId) {
     document.querySelectorAll('.tab').forEach(b => b.classList.remove('on'));
     document.querySelectorAll('.tc').forEach(t => t.classList.remove('on'));
-    btn.classList.add('on');
+
+    const btn = document.querySelector(`.tab[data-tab="${tabId}"]`);
+    if (btn) btn.classList.add('on');
+
     const el = document.getElementById(`tc-${tabId}`);
-    el.classList.add('on');
-
-    const page = SITE.pages.find(p => p.id === pageId);
-    const tab = page.tabs.find(t => t.id === tabId);
-    await this.loadTabContent(tab);
-
-    window.scrollTo({ top: this.tabsScrollTop || 0 });
+    if (el) {
+      el.classList.add('on');
+      const tab = page.tabs.find(t => t.id === tabId);
+      if (tab) await this.loadTabContent(tab);
+    }
   },
 
-  // ── 페이지 이동 ────────────────────────────────────────────
-  async navigate(pageId) {
+  // ── 핵심 렌더 함수 (hashchange → 호출) ─────────────────────
+  async render(pageId, tabId) {
     const page = SITE.pages.find(p => p.id === pageId);
-    if (!page) return;
+    if (!page) {
+      window.location.hash = 'home';
+      return;
+    }
 
+    const pageChanged = this.currentPage !== pageId;
     this.currentPage = pageId;
-    window.scrollTo({ top: 0, behavior: 'smooth' });
 
     // nav 활성화
     document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('on'));
@@ -203,28 +226,34 @@ const App = {
     if (navLink) navLink.classList.add('on');
 
     const main = document.getElementById('main-root');
-    main.innerHTML = '<div style="padding:4rem;text-align:center;color:var(--muted)">로딩 중...</div>';
 
-    let html = '';
-    if (page.type === 'home') {
-      html = this.buildHomePage(page);
-    } else if (page.type === 'simple') {
-      html = await this.buildSimplePage(page);
-    } else if (page.type === 'tabbed') {
-      html = this.buildTabbedPage(page);
+    if (pageChanged) {
+      window.scrollTo({ top: 0 });
+      main.innerHTML = '<div style="padding:4rem;text-align:center;color:var(--muted)">로딩 중...</div>';
+
+      let html = '';
+      if (page.type === 'home') {
+        html = this.buildHomePage(page);
+      } else if (page.type === 'simple') {
+        html = await this.buildSimplePage(page);
+      } else if (page.type === 'tabbed') {
+        html = this.buildTabbedPage(page, tabId);
+      }
+      main.innerHTML = html;
     }
 
-    main.innerHTML = html;
-
-    // tabbed 페이지: 첫 번째 탭 자동 로드 후 탭 바 위치로 스크롤
     if (page.type === 'tabbed') {
-      await this.loadTabContent(page.tabs[0]);
-      const mhero = document.querySelector('.mhero');
-      this.tabsScrollTop = mhero ? mhero.offsetTop + mhero.offsetHeight - 64 : 0;
+      const targetTabId = tabId || page.tabs[0].id;
+      await this.activateTab(page, targetTabId);
+      this.currentTab = targetTabId;
+
+      if (pageChanged) {
+        const mhero = document.querySelector('.mhero');
+        this.tabsScrollTop = mhero ? mhero.offsetTop + mhero.offsetHeight - 64 : 0;
+      }
       window.scrollTo({ top: this.tabsScrollTop });
     }
 
-    // simple 페이지 mermaid 렌더
     if (page.type === 'simple') {
       setTimeout(() => mermaid.run({ nodes: main.querySelectorAll('.mermaid') }), 80);
     }
@@ -244,7 +273,15 @@ const App = {
     this.initMermaid();
     this.renderNav();
     this.initScrollTop();
-    await this.navigate('home');
+
+    window.addEventListener('hashchange', async () => {
+      const { pageId, tabId } = this.parseHash();
+      await this.render(pageId, tabId);
+    });
+
+    // 현재 해시에서 초기 페이지 결정 (북마크/직접 URL 지원)
+    const { pageId, tabId } = this.parseHash();
+    await this.render(pageId, tabId);
   }
 };
 
