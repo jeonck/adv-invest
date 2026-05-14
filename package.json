@@ -1,0 +1,10 @@
+{
+  "name": "adv-invest",
+  "version": "1.0.0",
+  "description": "최고의 투자 — 일등주식투자법 & MSTR 전략 가이드",
+  "scripts": {
+    "start": "python3 -m http.server 8080",
+    "serve": "python3 -m http.server 8080"
+  },
+  "private": true
+}
