@@ -92,7 +92,8 @@ const SITE = {
         { id: 't1', label: '🏆 일등주 원칙',   content: 'content/method/1-stock.md' },
         { id: 't2', label: '📉 -3% 법칙',    content: 'content/method/2-rule.md' },
         { id: 't3', label: '⚖️ 말뚝 박기',    content: 'content/method/3-rebalancing.md' },
-        { id: 't4', label: '🔄 분할 대응',    content: 'content/method/4-updated.md' }
+        { id: 't4', label: '🔄 분할 대응',    content: 'content/method/4-updated.md' },
+        { id: 't5', label: '📈 진입·매수법',  content: 'content/method/5-entry.md' }
       ]
     }
   ]
