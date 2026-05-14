@@ -270,6 +270,20 @@ const App = {
 
   // ── 앱 시작 ────────────────────────────────────────────────
   async init() {
+    if (window.location.protocol === 'file:') {
+      document.body.innerHTML = `
+        <div style="max-width:560px;margin:6rem auto;padding:2rem;background:#1a2035;border:1px solid #f7931a;border-radius:12px;font-family:sans-serif;color:#e2e8f0">
+          <div style="font-size:2rem;margin-bottom:1rem">⚠️</div>
+          <h2 style="color:#f7931a;margin:0 0 1rem">HTTP 서버가 필요합니다</h2>
+          <p style="color:#94a3b8">이 앱은 <code style="background:#0d1117;padding:2px 6px;border-radius:4px">file://</code> 프로토콜로는 동작하지 않습니다.<br>마크다운 파일을 불러오려면 HTTP 서버를 통해 접근해야 합니다.</p>
+          <p style="margin-top:1.2rem;font-weight:bold">터미널에서 아래 명령을 실행하세요:</p>
+          <pre style="background:#0d1117;padding:1rem;border-radius:8px;color:#10b981;font-size:1rem">npm start</pre>
+          <p>그런 다음 브라우저에서 아래 주소를 여세요:</p>
+          <a href="http://localhost:8080" style="color:#f7931a;font-size:1.1rem;font-weight:bold">http://localhost:8080</a>
+        </div>`;
+      return;
+    }
+
     this.initMermaid();
     this.renderNav();
     this.initScrollTop();
