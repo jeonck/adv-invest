@@ -16,7 +16,8 @@ const SITE = {
         subtitle: '복잡한 투자 원리를 초보자도 알기 쉽게. 검증된 전략으로 자산을 불려나가세요.',
         buttons: [
           { label: '🟠 MSTR 전략 알아보기', page: 'mstr', style: 'primary' },
-          { label: '📊 일등주식투자법',       page: 'method', style: 'secondary' }
+          { label: '📊 일등주식투자법',       page: 'method', style: 'secondary' },
+          { label: '👴 87세 트레이더 투자법', page: 'veteran', style: 'secondary' }
         ]
       },
       cards: [
@@ -29,6 +30,11 @@ const SITE = {
           icon: '📊', title: '일등주식투자법', page: 'method',
           desc: '시장을 이기는 검증된 가치 투자 방법론. 일등 기업을 선별하고 장기 보유하는 핵심 전략을 소개합니다.',
           badges: [{ label: '가치투자', style: 'green' }, { label: '장기투자', style: 'blue' }, { label: '분산투자', style: 'green' }]
+        },
+        {
+          icon: '👴', title: '87세 현역 트레이더 투자법', page: 'veteran',
+          desc: '일본 87세 현역 트레이더의 역발상 매매 8원칙. 아침 급락에 사고 고점을 추격하지 않는, 살아남기 위한 규칙을 정리했습니다.',
+          badges: [{ label: '역발상', style: 'gold' }, { label: '단기매매', style: 'blue' }, { label: '리스크관리', style: 'green' }]
         },
         {
           icon: '🌐', title: '거시경제 분석',
@@ -94,6 +100,34 @@ const SITE = {
         { id: 't3', label: '⚖️ 말뚝 박기',    content: 'content/method/3-rebalancing.md' },
         { id: 't4', label: '🔄 분할 대응',    content: 'content/method/4-updated.md' },
         { id: 't5', label: '📈 진입·매수법',  content: 'content/method/5-entry.md' }
+      ]
+    },
+
+    {
+      id: 'veteran',
+      navLabel: '87세 트레이더',
+      type: 'tabbed',
+      hero: {
+        icon: '👴',
+        title: '87세 현역 트레이더 투자법',
+        subtitle: '일본 초고령 현역 트레이더의 역발상 매매 8원칙',
+        stats: [
+          { value: '87세',   label: '현역 트레이더' },
+          { value: '8원칙',  label: '매매 규칙 개수' },
+          { value: '🌅 아침', label: '급락 매수 · 급등 매도' },
+          { value: '🌇 오후', label: '급등 추격 금지' },
+          { value: '🔄 역발상', label: '항상 반대를 노린다' }
+        ]
+      },
+      tabs: [
+        { id: 't0', label: '📌 개요',           content: 'content/veteran/0-overview.md' },
+        { id: 't1', label: '🌅 아침 매매법',     content: 'content/veteran/1-morning.md' },
+        { id: 't2', label: '🌇 오후 매매법',     content: 'content/veteran/2-afternoon.md' },
+        { id: 't3', label: '🚫 3무 원칙',        content: 'content/veteran/3-three-no.md' },
+        { id: 't4', label: '🕯️ 음봉매수·양봉매도', content: 'content/veteran/4-candle.md' },
+        { id: 't5', label: '🔄 역발상',          content: 'content/veteran/5-contrarian.md' },
+        { id: 't6', label: '⏳ 기다림·익절',      content: 'content/veteran/6-wait-exit.md' },
+        { id: 't7', label: '📋 실전 체크리스트',   content: 'content/veteran/7-checklist.md' }
       ]
     }
   ]

@@ -90,6 +90,8 @@ css/
   style.css
 content/
   mstr/         — MSTR 탭별 마크다운 파일 (0-overview.md ~ 7-risk.md)
+  method/       — 일등주식투자법 탭별 마크다운 파일 (0-overview.md ~ 5-entry.md)
+  veteran/      — 87세 현역 트레이더 투자법 탭별 마크다운 파일 (0-overview.md ~ 7-checklist.md)
 ```
 
 새 탭/페이지 추가 시 `config.js`만 수정하면 됨. 콘텐츠는 해당 `.md` 파일 편집.
